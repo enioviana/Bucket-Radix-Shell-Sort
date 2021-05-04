@@ -2,51 +2,50 @@
 """
  Created by eniocc at 03/05/2021
 """
+import timeit
 
 
 class Radix:
     def __init__(self, vetor):
-        # Find the maximum number to know number of digits
-        max1 = max(vetor)
+        print("\nOrdenado por Radix Sort")
+        self.start = timeit.default_timer()
+        self.total_time = 0
+        self.total_comparations = 0
 
-        # Do counting sort for every digit. Note that instead of passing digit number, exp is passed. exp is 10^i
-        # where i is current digit number
-        exp = 1.0
-        while max1 / exp > 0.0:
-            Radix.counting_sort(vetor, exp)
-            exp *= 10
+        ma = max(vetor)
+        place = 1
+        while ma // place > 0:
+            self.counting_sort(vetor, place)
+            place *= 10
+        self.stop = timeit.default_timer()
+        self.total_time = self.stop - self.start
 
-    @staticmethod
-    def counting_sort(vetor, exp1):
+        print('Tempo total: {0}'.format(self.total_time))
+        print('Comparações: {0}'.format(self.total_comparations))
+        # print("Vetor ordenado {0}".format(vetor))
 
-        n = len(vetor)
-
-        # The output array elements that will have sorted arr
-        output = [0] * n
-
-        # initialize count array as 0
+    def counting_sort(self, vetor, place):
+        size = len(vetor)
+        output = [0] * size
         count = [0] * 10
 
-        # Store count of occurrences in count[]
-        for i in range(0, n):
-            index = (vetor[i] / exp1)
-            count[int(index % 10)] += 1
+        # Calculate count of elements
+        for i in range(0, size):
+            index = vetor[i] // place
+            count[index % 10] += 1
 
-        # Change count[i] so that count[i] now contains actual
-        # position of this digit in output array
+        # Calculate cumulative count
         for i in range(1, 10):
             count[i] += count[i - 1]
 
-        # Build the output array
-        i = n - 1
+        # Place the elements in sorted order
+        i = size - 1
         while i >= 0:
-            index = (vetor[i] / exp1)
-            output[count[int(index % 10)] - 1] = vetor[i]
-            count[int(index % 10)] -= 1
+            # self.total_comparations += 1
+            index = vetor[i] // place
+            output[count[index % 10] - 1] = vetor[i]
+            count[index % 10] -= 1
             i -= 1
 
-        # Copying the output array to arr[],
-        # so that arr now contains sorted numbers
-        i = 0
-        for i in range(0, len(vetor)):
+        for i in range(0, size):
             vetor[i] = output[i]
