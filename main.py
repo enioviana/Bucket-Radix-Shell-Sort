@@ -2,36 +2,29 @@
 """
  Created by eniocc at 03/05/2021
 """
+from random import randint
+import timeit
+
 from Bucket import Bucket
 from Radix import Radix
 from Shell import Shell
 
-# Driver Code
-x = [0.897, 0.565, 0.656, 0.1234, 0.665, 0.3434]
 
-buck = Bucket()
-rad = Radix(x)
-
-copy_x = x
-shel = Shell(copy_x)
-
-print()
-print("Ordenado por Bucket Sort")
-vetor_buck = buck.run(x)
-for i in range(len(vetor_buck)):
-    print(vetor_buck[i], end=" ")
-print()
+def criar_vetor(tamanho):
+    v1 = []
+    v2 = []
+    v3 = []
+    for i_ in range(tamanho):
+        aux = randint(0, tamanho)
+        v1.append(aux)
+        v2.append(aux)
+        v3.append(aux)
+    return v1, v2, v3
 
 
-print()
-print("Ordenado por Radix Sort")
-for i in range(len(x)):
-    print(x[i], end=" ")
-print()
+vec_buck, vec_rad, vec_shel = criar_vetor(100000)
+# print("Vetor a ser ordenado\n{0}".format(vec_rad))
 
-
-print()
-print("Ordenado por Shell Sort")
-for i in range(len(copy_x)):
-    print(copy_x[i], end=" ")
-print()
+buck = Bucket(vec_buck)
+rad = Radix(vec_rad)
+shel = Shell(vec_shel)

@@ -2,42 +2,58 @@
 """
  Created by eniocc at 03/05/2021
 """
+import timeit
 
 
 class Bucket:
-    def __init__(self):
-        self.arr = []
-        self.slot_num = 10  # 10 means 10 slots, each
+    vetor = []
+
+    def __init__(self, vetor, buckets=10):
+        print("\nOrdenado por Bucket Sort")
+
+        self.start = timeit.default_timer()
+        Bucket.vetor = vetor
+        self.total_time = 0
+        self.total_comparations = 0
+        self.slot_num = buckets
+
+        Bucket.vetor = self.run(Bucket.vetor)
+
+        self.stop = timeit.default_timer()
+        self.total_time = self.stop - self.start
+
+        print('Tempo total: {0}'.format(self.total_time))
+        print('Comparações: {0}'.format(self.total_comparations))
+        # print("Vetor ordenado {0}".format(Bucket.vetor))
 
     def run(self, vetor):
-        # slot's size is 0.1
-        for i in range(self.slot_num):
-            self.arr.append([])
+        comprimento = len(vetor)
+        bucket = [[] for _ in range(comprimento)]
+        maior = max(vetor)
+        tamanho = maior / comprimento
 
-        # Put array elements in different buckets
-        for j in vetor:
-            index_b = int(self.slot_num * j)
-            self.arr[index_b].append(j)
+        for i in range(comprimento):
+            j = int(vetor[i] / tamanho)
+            if j != comprimento:
+                self.total_comparations += 1
+                bucket[j].append(vetor[i])
+            else:
+                bucket[comprimento - 1].append(vetor[i])
 
-        # Sort individual buckets
-        for i in range(self.slot_num):
-            self.arr[i] = Bucket.insertion_sort(self.arr[i])
+        for i in range(comprimento):
+            self.insertion_sort(bucket[i])
 
-        # concatenate the result
-        k = 0
-        for i in range(self.slot_num):
-            for j in range(len(self.arr[i])):
-                vetor[k] = self.arr[i][j]
-                k += 1
-        return vetor
+        vetor_ordenado = []
+        for i in range(comprimento):
+            vetor_ordenado = vetor_ordenado + bucket[i]
+        return vetor_ordenado
 
-    @staticmethod
-    def insertion_sort(b):
-        for i in range(1, len(b)):
-            up = b[i]
+    def insertion_sort(self, vetor):
+        for i in range(1, len(vetor)):
+            atual = vetor[i]
             j = i - 1
-            while j >= 0 and b[j] > up:
-                b[j + 1] = b[j]
-                j -= 1
-            b[j + 1] = up
-        return b
+            while j >= 0 and atual < vetor[j]:
+                self.total_comparations += 1
+                vetor[j + 1] = vetor[j]
+                j = j - 1
+            vetor[j + 1] = atual
