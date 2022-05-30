@@ -14,7 +14,7 @@ def criar_vetor(tamanho):
     v1 = []
     v2 = []
     v3 = []
-    for i_ in range(tamanho):
+    for _ in range(tamanho):
         aux = randint(0, tamanho)
         v1.append(aux)
         v2.append(aux)

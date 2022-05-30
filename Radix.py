@@ -30,7 +30,7 @@ class Radix:
         count = [0] * 10
 
         # Calculate count of elements
-        for i in range(0, size):
+        for i in range(size):
             index = vetor[i] // place
             count[index % 10] += 1
 
@@ -47,5 +47,5 @@ class Radix:
             count[index % 10] -= 1
             i -= 1
 
-        for i in range(0, size):
+        for i in range(size):
             vetor[i] = output[i]
